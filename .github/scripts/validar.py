@@ -45,6 +45,11 @@ for f in sys.argv[1:]:
     if re.search(r"^# [^#]", body, re.M): err(f, "no uses '# ' (H1) en el texto: el título ya es el H1; empieza en '## '")
     if not re.search(r"^## ", body, re.M): err(f, "usa al menos un encabezado '## ' para estructurar el artículo")
     if re.search(r"!\[\s*\]\(", body): err(f, "hay imágenes sin texto alternativo: usa ![descripción](archivo.png)")
+    # Seguridad: el sitio renderiza HTML del artículo tal cual (no se escapa); se rechaza lo ejecutable
+    PELIGROSO = re.compile(r"<\s*(script|iframe|object|embed|form|style|link|meta|base)\b|javascript\s*:|\son[a-z]+\s*=|\{\{|\{%", re.I)
+    for n, linea in enumerate(txt.splitlines(), 1):
+        if PELIGROSO.search(linea):
+            err(f, f"línea {n}: contenido no permitido (script, iframe, form, style, eventos on*=, javascript: o Twig): {linea.strip()[:60]}")
     if not p.parent.name or not SLUG.match(p.parent.name):
         err(f, f"la carpeta '{p.parent.name}' debe ser un slug en minúsculas con guiones")
     if len(txt.split("---", 2)[-1].strip()) < 200:
