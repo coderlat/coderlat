@@ -1,10 +1,14 @@
 # Cómo publicar en Coderlat
 
 1. Haz **fork** de este repositorio.
-2. Copia `templates/articulo/` a `pages/02.blog/<slug-de-tu-articulo>/` (slug en minúsculas, sin tildes, con guiones).
+2. Copia `templates/articulo/` a `aportes/<slug-de-tu-articulo>/` (slug en minúsculas, sin tildes, con guiones).
 3. Renombra el archivo a `item.es.md` y completa el encabezado (frontmatter) y el texto en Markdown. Imágenes: en la misma carpeta, referenciadas por nombre.
 4. Abre un **Pull Request** hacia `main`. La validación automática te dirá si falta algo.
-5. Revisamos, pedimos ajustes si hace falta y, al aprobar, se publica en el sitio.
+5. Revisamos, pedimos ajustes si hace falta y, al aprobar, **se publica en el sitio automáticamente** y tu carpeta sale de `aportes/` (este repositorio es solo un buzón, por eso es liviano).
+
+> Tip: no necesitas clonar nada. En GitHub, entra a `aportes/` → **Add file → Create new file** y escribe `mi-articulo/item.es.md`; GitHub crea el fork y el PR por ti. Tu PR solo puede tocar archivos dentro de `aportes/`.
+
+Archivos permitidos junto al artículo: `.md`, `.png`, `.jpg`, `.gif`, `.webp`, `.webm`, `.mp4` (máx. 1 MB por imagen, sin subcarpetas).
 
 ## Encabezado obligatorio
 
