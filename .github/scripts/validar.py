@@ -6,6 +6,7 @@ REQUIRED = ["title", "date", "author"]
 TAXONOMIAS = ["tool", "resource", "country"]
 SLUG = re.compile(r"^[a-z0-9][a-z0-9\-]*$")
 MAX_IMG = 1024 * 1024
+PERMITIDAS = {".md", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".webm", ".mp4"}
 errores = []
 
 def err(f, m): errores.append(f"{f}: {m}")
@@ -54,6 +55,13 @@ for f in sys.argv[1:]:
         err(f, f"la carpeta '{p.parent.name}' debe ser un slug en minúsculas con guiones")
     if len(txt.split("---", 2)[-1].strip()) < 200:
         err(f, "el artículo es demasiado corto (mínimo ~200 caracteres)")
+    for extra in p.parent.rglob("*"):
+        if extra.is_symlink():
+            err(str(extra), "no se permiten enlaces simbólicos")
+        elif extra.is_dir():
+            err(str(extra), "no se permiten subcarpetas dentro del artículo")
+        elif extra.suffix.lower() not in PERMITIDAS:
+            err(str(extra), f"tipo de archivo no permitido ({extra.suffix or 'sin extensión'}); permitidos: " + ", ".join(sorted(PERMITIDAS)))
     for img in p.parent.glob("*"):
         if img.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".webp"} and img.stat().st_size > MAX_IMG:
             err(str(img), "imagen mayor a 1 MB")

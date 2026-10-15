@@ -1,18 +1,37 @@
 name: Validar contenido
 on:
-  pull_request:
-    paths: ['pages/**']
+  pull_request:          # sin secretos y con permisos de solo lectura: seguro para PRs de forks
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validar-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   validar:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0}
+
+      - name: Un PR externo solo puede tocar aportes/
+        if: ${{ github.event.pull_request.author_association != 'OWNER' }}
+        run: |
+          fuera=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -v '^aportes/' || true)
+          if [ -n "$fuera" ]; then
+            echo "Este PR modifica archivos fuera de aportes/ (solo el mantenedor puede hacerlo):"
+            echo "$fuera"
+            exit 1
+          fi
+
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: pip install pyyaml
+
       - name: Validar artículos modificados
         run: |
-          git diff --name-only --diff-filter=AM origin/${{ github.base_ref }}...HEAD -- 'pages/**/item*.md' > cambiados.txt
+          git diff --name-only --diff-filter=AM origin/${{ github.base_ref }}...HEAD -- 'aportes/**/item*.md' > cambiados.txt
           cat cambiados.txt
           python .github/scripts/validar.py $(cat cambiados.txt)
