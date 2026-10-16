@@ -180,7 +180,7 @@ Ej: Archivo modificado + comentarios explicando cada cambio + resumen de funcion
 El prompt se construye en código. Las etiquetas XML son **más importantes** aquí porque el contenido es dinámico e impredecible. La línea de conjunción **sí se incluye** para dar instrucción explícita al modelo.
 
 ```python
-# ── Plantilla reutilizable ─────────────────────────────────────────────────────
+## ── Plantilla reutilizable ─────────────────────────────────────────────────────
 PROMPT_TEMPLATE = """
 <instruccion>{instruccion}</instruccion>
 <contenido>{contenido}</contenido>
@@ -194,7 +194,7 @@ def build_prompt(**kwargs) -> str:
     return PROMPT_TEMPLATE.format(**kwargs)
 
 
-# ── Configuraciones específicas (separadas de la plantilla) ────────────────────
+## ── Configuraciones específicas (separadas de la plantilla) ────────────────────
 CONFIGS = {
     "analista_financiero": {
         "instruccion": "Eres un analista financiero experto...",
@@ -209,7 +209,7 @@ CONFIGS = {
 }
 
 
-# ── Uso ────────────────────────────────────────────────────────────────────────
+## ── Uso ────────────────────────────────────────────────────────────────────────
 config = CONFIGS["analista_financiero"]
 prompt = build_prompt(**config, contenido=texto_externo)
 ```
