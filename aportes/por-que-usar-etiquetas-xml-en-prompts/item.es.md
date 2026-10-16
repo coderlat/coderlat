@@ -10,7 +10,7 @@ taxonomy:
     country:
         - chile
 metadata:
-    description: 'Un prompt es una instrucción en lenguaje natural, y como tal, puede ser ambiguo. Las etiquetas XML resuelven esa ambigüedad delimitando con precisión qué parte del mensaje es la instrucción, qué es el contenido a procesar y qué formato debe tener la respuesta.'
+    description: 'Un prompt es una instrucción en lenguaje natural, y como tal, puede ser ambiguo. Las etiquetas XML resuelven esa ambigüedad.'
 faq:
     -
         q: '¿Cómo escribir un buen prompt?'
@@ -108,13 +108,6 @@ Ej: Eres un analista financiero especializado en mercados latinoamericanos.]
     - Si una solicitud es ambigua, solicita clarificación antes de proceder.
   </uncertainty_handling>
 </output_guardrails>
-```
-
-### El usuario escribe en cada chat
-
-```
-{{variable_1}}
-{{variable_2}}
 ```
 
 ---
