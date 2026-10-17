@@ -1,4 +1,4 @@
-"""Valida frontmatter de artículos de coderLAT. Uso: validar.py archivo.md ..."""
+"""Valida frontmatter de artículos de Coderlat. Uso: validar.py archivo.md ..."""
 import re, sys, datetime, pathlib
 import yaml
 
@@ -7,6 +7,8 @@ TAXONOMIAS = ["tool", "resource", "country"]
 SLUG = re.compile(r"^[a-z0-9][a-z0-9\-]*$")
 MAX_IMG = 1024 * 1024
 PERMITIDAS = {".md", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".webm", ".mp4"}
+MARCAS = re.compile(r"\[\s*(VERIFICAR|PEGA\s+AQU)", re.I)
+IA_VALORES = {"asistido", "no"}
 errores = []
 
 def err(f, m): errores.append(f"{f}: {m}")
@@ -14,6 +16,9 @@ def err(f, m): errores.append(f"{f}: {m}")
 for f in sys.argv[1:]:
     p = pathlib.Path(f)
     txt = p.read_text(encoding="utf-8")
+    for n, linea in enumerate(txt.splitlines(), 1):
+        if MARCAS.search(linea):
+            err(f, f"línea {n}: queda una marca sin resolver ([VERIFICAR...] o [PEGA AQUÍ...]); complétala o elimínala antes de publicar")
     m = re.match(r"^---\n(.*?)\n---\n", txt, re.S)
     if not m:
         err(f, "falta el encabezado (frontmatter) entre '---'"); continue
@@ -23,6 +28,8 @@ for f in sys.argv[1:]:
         err(f, f"YAML inválido: {e}"); continue
     for k in REQUIRED:
         if not fm.get(k): err(f, f"falta '{k}'")
+    if "ia" in fm and str(fm["ia"]).strip().lower() not in IA_VALORES:
+        err(f, "'ia' solo admite 'asistido' (o se omite si no usaste IA)")
     d = fm.get("date")
     if d and not isinstance(d, datetime.datetime):
         try: datetime.datetime.strptime(str(d), "%d-%m-%Y %H:%M")
