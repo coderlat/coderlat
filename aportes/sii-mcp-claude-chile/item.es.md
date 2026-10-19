@@ -77,13 +77,13 @@ También incluye superficies que generan archivos o escriben datos:
 Requiere Node 20 o superior. Los pasos que indica el repositorio:
 
 ```bash
-# 1) Instalación de la CLI y del servidor MCP
+## 1) Instalación de la CLI y del servidor MCP
 npm i -g @albertomarturelo/sii-cli @albertomarturelo/sii-mcp
 
-# 2) Instalación del navegador que usa el login (una sola vez, ~100-150 MB)
+## 2) Instalación del navegador que usa el login (una sola vez, ~100-150 MB)
 npx playwright install chromium
 
-# 3) Inicio de sesión: se abre el navegador en la página real del SII
+## 3) Inicio de sesión: se abre el navegador en la página real del SII
 sii auth login
 ```
 
