@@ -88,8 +88,6 @@ brew install --cask tts-sidecar
 
 El Cask exige Homebrew y no descarga el modelo, así que después debes correr `tts-sidecar setup`.
 
-[VERIFICAR: versión vigente del Release al momento de publicar]
-
 ## Otras formas de instalar
 
 **Desde PyPI** (requiere Python 3.13+):
